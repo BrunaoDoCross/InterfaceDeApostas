@@ -4,7 +4,9 @@
  */
 package Telas;
 
+import entities.Aposta;
 import entities.Cliente;
+import entities.Rodada;
 import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -13,7 +15,7 @@ import java.text.NumberFormat;
  *
  * @author Bruno
  */
-public class Main extends javax.swing.JDialog {
+public final class Main extends javax.swing.JDialog {
 
     /**
      * Creates new form Tela
@@ -23,15 +25,17 @@ public class Main extends javax.swing.JDialog {
         initComponents();
         getContentPane().setBackground(Color.BLACK);
     }
-
-    NumberFormat formatter = new DecimalFormat("0.00");
-    Cliente cli;
-
+    int x = 0;
     
-    public void montaTela(Cliente cli) {
-        cSaldoTotal.setText("R$ " + formatter.format(cli.getSaldoDaConta()));
+    NumberFormat formatter = new DecimalFormat("0.00");
+    
+    Cliente cl = new Cliente();
+    Aposta aposta = new Aposta();
+    
+    public void montaTela() {
+        cSaldoTotal.setText("R$ " + formatter.format(cl.getSaldoDaConta()));
         cSaldoDasRodadas.setText("R$ 00,00");
-        cNome.setText(cli.getNome());
+        cNome.setText(cl.getNome());
     }
 
     /**
@@ -49,19 +53,20 @@ public class Main extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         cSaldoTotal = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        perdi = new javax.swing.JButton();
+        botaoPerdi = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         cSaldoDasRodadas = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        nova = new javax.swing.JButton();
+        botaoSair = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        cRodadaAtual = new javax.swing.JTextField();
+        cValorApostado = new javax.swing.JTextField();
         cNome = new javax.swing.JTextField();
-        ganhei = new javax.swing.JButton();
+        botaoNovaRodada = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        cCalcPraColocar = new javax.swing.JTextField();
-        nova1 = new javax.swing.JButton();
+        cValorPraColocar = new javax.swing.JTextField();
+        botaoNovoApostador = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
+        botaoGanhei = new javax.swing.JButton();
 
         jButton5.setText("+ 10");
 
@@ -103,11 +108,16 @@ public class Main extends javax.swing.JDialog {
         jLabel3.setText("Valor que vou apostar na rodada: ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
 
-        perdi.setBackground(new java.awt.Color(0, 0, 0));
-        perdi.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 14)); // NOI18N
-        perdi.setForeground(new java.awt.Color(255, 0, 0));
-        perdi.setText("Perdi");
-        getContentPane().add(perdi, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 120, 80, 30));
+        botaoPerdi.setBackground(new java.awt.Color(0, 0, 0));
+        botaoPerdi.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 14)); // NOI18N
+        botaoPerdi.setForeground(new java.awt.Color(255, 0, 0));
+        botaoPerdi.setText("Perdi");
+        botaoPerdi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoPerdiActionPerformed(evt);
+            }
+        });
+        getContentPane().add(botaoPerdi, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 120, 80, 30));
 
         jLabel4.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -131,32 +141,32 @@ public class Main extends javax.swing.JDialog {
         jLabel5.setText("Rodada");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 80, -1, -1));
 
-        nova.setBackground(new java.awt.Color(0, 0, 0));
-        nova.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 14)); // NOI18N
-        nova.setForeground(new java.awt.Color(255, 255, 255));
-        nova.setText("Sair");
-        nova.addActionListener(new java.awt.event.ActionListener() {
+        botaoSair.setBackground(new java.awt.Color(0, 0, 0));
+        botaoSair.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 14)); // NOI18N
+        botaoSair.setForeground(new java.awt.Color(255, 255, 255));
+        botaoSair.setText("Sair");
+        botaoSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                novaActionPerformed(evt);
+                botaoSairActionPerformed(evt);
             }
         });
-        getContentPane().add(nova, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 400, 60, 30));
+        getContentPane().add(botaoSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 400, 60, 30));
 
         jLabel6.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Quanto devo colocar na rodada:");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
 
-        cRodadaAtual.setBackground(new java.awt.Color(51, 51, 51));
-        cRodadaAtual.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        cRodadaAtual.setForeground(new java.awt.Color(255, 255, 255));
-        cRodadaAtual.setCaretColor(new java.awt.Color(255, 255, 255));
-        cRodadaAtual.addActionListener(new java.awt.event.ActionListener() {
+        cValorApostado.setBackground(new java.awt.Color(51, 51, 51));
+        cValorApostado.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        cValorApostado.setForeground(new java.awt.Color(255, 255, 255));
+        cValorApostado.setCaretColor(new java.awt.Color(255, 255, 255));
+        cValorApostado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cRodadaAtualActionPerformed(evt);
+                cValorApostadoActionPerformed(evt);
             }
         });
-        getContentPane().add(cRodadaAtual, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 115, 103, 35));
+        getContentPane().add(cValorApostado, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 115, 103, 35));
 
         cNome.setEditable(false);
         cNome.setBackground(new java.awt.Color(51, 51, 51));
@@ -170,39 +180,44 @@ public class Main extends javax.swing.JDialog {
         });
         getContentPane().add(cNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 355, 230, 30));
 
-        ganhei.setBackground(new java.awt.Color(0, 0, 0));
-        ganhei.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 14)); // NOI18N
-        ganhei.setForeground(new java.awt.Color(0, 255, 0));
-        ganhei.setText("Ganhei");
-        getContentPane().add(ganhei, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 120, 80, 30));
+        botaoNovaRodada.setBackground(new java.awt.Color(0, 0, 0));
+        botaoNovaRodada.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 14)); // NOI18N
+        botaoNovaRodada.setForeground(new java.awt.Color(255, 255, 255));
+        botaoNovaRodada.setText("Novo Jogo");
+        botaoNovaRodada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoNovaRodadaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(botaoNovaRodada, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 160, 170, 30));
 
         jLabel7.setFont(new java.awt.Font("Lucida Calligraphy", 1, 36)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Interface de Apostas");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, -1, -1));
 
-        cCalcPraColocar.setEditable(false);
-        cCalcPraColocar.setBackground(new java.awt.Color(51, 51, 51));
-        cCalcPraColocar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        cCalcPraColocar.setForeground(new java.awt.Color(255, 255, 255));
-        cCalcPraColocar.setCaretColor(new java.awt.Color(255, 255, 255));
-        cCalcPraColocar.addActionListener(new java.awt.event.ActionListener() {
+        cValorPraColocar.setEditable(false);
+        cValorPraColocar.setBackground(new java.awt.Color(51, 51, 51));
+        cValorPraColocar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        cValorPraColocar.setForeground(new java.awt.Color(255, 255, 255));
+        cValorPraColocar.setCaretColor(new java.awt.Color(255, 255, 255));
+        cValorPraColocar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cCalcPraColocarActionPerformed(evt);
+                cValorPraColocarActionPerformed(evt);
             }
         });
-        getContentPane().add(cCalcPraColocar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 155, 103, 35));
+        getContentPane().add(cValorPraColocar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 155, 103, 35));
 
-        nova1.setBackground(new java.awt.Color(0, 0, 0));
-        nova1.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 14)); // NOI18N
-        nova1.setForeground(new java.awt.Color(255, 255, 255));
-        nova1.setText("Novo Apostador");
-        nova1.addActionListener(new java.awt.event.ActionListener() {
+        botaoNovoApostador.setBackground(new java.awt.Color(0, 0, 0));
+        botaoNovoApostador.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 14)); // NOI18N
+        botaoNovoApostador.setForeground(new java.awt.Color(255, 255, 255));
+        botaoNovoApostador.setText("Novo Apostador");
+        botaoNovoApostador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nova1ActionPerformed(evt);
+                botaoNovoApostadorActionPerformed(evt);
             }
         });
-        getContentPane().add(nova1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, -1, 30));
+        getContentPane().add(botaoNovoApostador, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, -1, 30));
 
         jLabel8.setBackground(new java.awt.Color(0, 0, 0));
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
@@ -213,6 +228,12 @@ public class Main extends javax.swing.JDialog {
         jLabel8.setMinimumSize(new java.awt.Dimension(0, 0));
         jLabel8.setPreferredSize(new java.awt.Dimension(0, 0));
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(684, 435, 10, 10));
+
+        botaoGanhei.setBackground(new java.awt.Color(0, 0, 0));
+        botaoGanhei.setFont(new java.awt.Font("Franklin Gothic Heavy", 0, 14)); // NOI18N
+        botaoGanhei.setForeground(new java.awt.Color(0, 255, 0));
+        botaoGanhei.setText("Ganhei");
+        getContentPane().add(botaoGanhei, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 120, 80, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -226,28 +247,57 @@ public class Main extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_cSaldoDasRodadasActionPerformed
 
-    private void novaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novaActionPerformed
+    private void botaoSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSairActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_novaActionPerformed
+    }//GEN-LAST:event_botaoSairActionPerformed
 
-    private void cRodadaAtualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cRodadaAtualActionPerformed
+    private void cValorApostadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cValorApostadoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cRodadaAtualActionPerformed
+    }//GEN-LAST:event_cValorApostadoActionPerformed
 
     private void cNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cNomeActionPerformed
 
-    private void cCalcPraColocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cCalcPraColocarActionPerformed
+    private void cValorPraColocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cValorPraColocarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cCalcPraColocarActionPerformed
+    }//GEN-LAST:event_cValorPraColocarActionPerformed
 
-    private void nova1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nova1ActionPerformed
+    private void botaoNovoApostadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovoApostadorActionPerformed
         TelaNova tela = new TelaNova(null, true);
         tela.setLocationRelativeTo(null);
         tela.setVisible(true);
-        montaTela(tela.getCliente());
-    }//GEN-LAST:event_nova1ActionPerformed
+        
+        cl = new Cliente();
+        cl.setNome(tela.getCliente().getNome());
+        cl.setSaldoDaConta(tela.getCliente().getSaldoDaConta());
+        montaTela();
+    }//GEN-LAST:event_botaoNovoApostadorActionPerformed
+
+    private void botaoPerdiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPerdiActionPerformed
+        if (x == 0){
+            Aposta aposta = new Aposta();
+        }
+        
+        
+        Rodada rodada = new Rodada();
+        rodada.setValorApostado(Double.parseDouble(cValorApostado.getText()));
+        aposta.getListaDeRodadas().add(rodada);
+        cl.setAposta(aposta);
+        cl.getAposta().getListaDeRodadas().add(rodada);
+        
+        Double soma = 0.0;
+        for(Rodada rodad: cl.getAposta().getListaDeRodadas()){
+            // Fazer calculo para somar as perdas e dizer quanto tenho que apostar na prox rodada
+        }
+            
+        cValorPraColocar.setText("R$ "+formatter.format(soma));
+        x+=1;
+    }//GEN-LAST:event_botaoPerdiActionPerformed
+
+    private void botaoNovaRodadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovaRodadaActionPerformed
+
+    }//GEN-LAST:event_botaoNovaRodadaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -293,12 +343,16 @@ public class Main extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField cCalcPraColocar;
+    private javax.swing.JButton botaoGanhei;
+    private javax.swing.JButton botaoNovaRodada;
+    private javax.swing.JButton botaoNovoApostador;
+    private javax.swing.JButton botaoPerdi;
+    private javax.swing.JButton botaoSair;
     private javax.swing.JTextField cNome;
-    private javax.swing.JTextField cRodadaAtual;
     private javax.swing.JTextField cSaldoDasRodadas;
     private javax.swing.JTextField cSaldoTotal;
-    private javax.swing.JButton ganhei;
+    private javax.swing.JTextField cValorApostado;
+    private javax.swing.JTextField cValorPraColocar;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
@@ -309,8 +363,5 @@ public class Main extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JButton nova;
-    private javax.swing.JButton nova1;
-    private javax.swing.JButton perdi;
     // End of variables declaration//GEN-END:variables
 }

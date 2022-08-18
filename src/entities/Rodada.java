@@ -9,14 +9,20 @@ package entities;
  * @author Bruno
  */
 public class Rodada {
-    private Double valorTotalApostadoNaRodada;
+    private Double valorApostado;
 
-    public Double getValorTotalApostadoNaRodada() {
-        return valorTotalApostadoNaRodada;
+    public Rodada(Double valorApostado) {
+        this.valorApostado = valorApostado;
     }
 
-    public void setValorTotalApostadoNaRodada(Double valorTotalApostadoNaRodada) {
-        this.valorTotalApostadoNaRodada = valorTotalApostadoNaRodada;
+    public Rodada() {
     }
     
+    public Double getValorApostado() {
+        return valorApostado;
+    }
+
+    public void setValorApostado(Double valorApostado) {
+        this.valorApostado = valorApostado;
+    }   
 }

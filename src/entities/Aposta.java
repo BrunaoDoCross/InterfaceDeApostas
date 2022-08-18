@@ -4,27 +4,30 @@
  */
 package entities;
 
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Bruno
  */
 public class Aposta {
-    private Cliente cliente;
     private Boolean status;
     private Double saldoFinalDaAposta;
     private Integer quantidadeDeRodadas;
     
-    ArrayList<Rodada> listaDeRodadas = new ArrayList<>();
+    List<Rodada> listaDeRodadas = new ArrayList<>();
 
-    public Cliente getCliente() {
-        return cliente;
+    public Aposta(Boolean status, Double saldoFinalDaAposta, Integer quantidadeDeRodadas) {
+        this.status = status;
+        this.saldoFinalDaAposta = saldoFinalDaAposta;
+        this.quantidadeDeRodadas = quantidadeDeRodadas;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public Aposta() {
     }
+    
 
     public Boolean getStatus() {
         return status;
@@ -50,13 +53,16 @@ public class Aposta {
         this.quantidadeDeRodadas = quantidadeDeRodadas;
     }
 
-    public ArrayList<Rodada> getListaDeRodadas() {
+    public List<Rodada> getListaDeRodadas() {
         return listaDeRodadas;
     }
 
     public void setListaDeRodadas(ArrayList<Rodada> listaDeRodadas) {
         this.listaDeRodadas = listaDeRodadas;
     }
-
+    
+    public void addRodada(Rodada rodada){
+        listaDeRodadas.add(rodada);
+    }
     
 }
