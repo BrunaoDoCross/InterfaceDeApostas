@@ -3,8 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/ProgramacaoPessoal/Blaze/SistemaDeApostas/src/Telas/TelaNova.java</file>
+            <file>file:/D:/ProgramacaoPessoal/Blaze/SistemaDeApostas/src/entities/Aposta.java</file>
+            <file>file:/D:/ProgramacaoPessoal/Blaze/SistemaDeApostas/src/entities/Cliente.java</file>
             <file>file:/D:/ProgramacaoPessoal/Blaze/SistemaDeApostas/src/Telas/Main.java</file>
+            <file>file:/D:/ProgramacaoPessoal/Blaze/SistemaDeApostas/src/Persistencia/HibernateUtil.java</file>
+            <file>file:/D:/ProgramacaoPessoal/Blaze/SistemaDeApostas/src/entities/Rodada.java</file>
         </group>
     </open-files>
 </project-private>

@@ -4,24 +4,23 @@
  */
 package entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  *
  * @author Bruno
  */
+@Entity
 public class Cliente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String nome;
     private Double saldoDaConta;
-    private Aposta aposta;
-
-    public Cliente() {
-    }
-
-    public Cliente(String nome, Double saldoDaConta, Aposta aposta) {
-        this.nome = nome;
-        this.saldoDaConta = saldoDaConta;
-        this.aposta = aposta;
-    }
 
     public String getNome() {
         return nome;
@@ -38,14 +37,5 @@ public class Cliente {
     public void setSaldoDaConta(Double saldoDaConta) {
         this.saldoDaConta = saldoDaConta;
     }
-
-    public Aposta getAposta() {
-        return aposta;
-    }
-
-    public void setAposta(Aposta aposta) {
-        this.aposta = aposta;
-    }
-
 
 }
